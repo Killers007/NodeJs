@@ -1,50 +1,34 @@
-// var app = require('express')();
-// var http = require('http').createServer(app);
-// var io = require('socket.io')(http);
+var express = require('express'); //import express 
+var app = express();
 
-// io.on('connection', function(socket){
-//   console.log('a user connected');
-
-//   socket.on('reload-chat', function(data){
-//   	socket.emit("reload_chat_"+data.to, data);
-//     console.log(JSON.stringify(data));
-//   });
-
-//   socket.on('emit_all', function(data){
-//   	console.log('all');
-//   	socket.emit("all", data);
-//   });
-// });
-
-// http.listen(3000, function(){
-//   console.log('listening on *:3000');
-// });
-
-var http = require('http')
-var express = require('express')
-var socketio = require('socket.io')
-var app = express(server)
-var server = http.Server(app)
-var io = socketio(server)
-
-app.get('/', function(req, res){
-  res.sendFile(__dirname + '/index.html')
+var server = app.listen(8080, function() {
+    console.log("Server Berjalan dengan port : 8080");
 });
 
-// io.on('connection', function(socket){
-//   socket.on('echo', function(data){
-//     socket.emit('echo', data);
-//   });
-// });
 
-io.on('connection', function(socket){
-  console.log('a user connected');
+//buat data yang akan dikirimkan berupa JSON
+var pegawai = {
+    "pegawai": [{
+            "id": 1,
+            "nama": "Faizal Damar R",
+            "tanggal_lahir": "12122020",
+            "jenis_kelamin": "L"
+        },
+        {
+            "id": 2,
+            "nama": "Yanuar Hidayanto",
+            "tanggal_lahir": "20122020",
+            "jenis_kelamin": "L"
+        },
+        {
+            "id": 3,
+            "nama": "Ahmad Juhdi",
+            "tanggal_lahir": "20122020",
+            "jenis_kelamin": "L"
+        },
+    ]
+}
 
-  socket.on('reload-chat', function(data){
-  	socket.broadcast.emit("reload_chat_"+data.to, data);
-    console.log(JSON.stringify(data));
-  });
-
+app.get('/pegawai', function(req, res) {
+    res.send(pegawai);
 });
-
-server.listen(3000); 
