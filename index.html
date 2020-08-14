@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" class="app">
+
+<head>
+    <meta charset="utf-8" />
+    <title>REALTIME MAPS</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body class="">
+    <section id="gmap_geocoding">
+    </section>
+
+</body>
+<script src="https://maps.google.com/maps/api/js?sensor=true&key=AIzaSyBWW6k0BFyLl7Q7pmCSH_9NFPnbkzr0InE&&libraries=geometry"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.8/socket.io.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.2/Chart.min.js"></script>
+<style type="text/css">
+    @media only screen and (max-width: 1400px) {
+        #gmap_geocoding {
+            min-height: 95%;
+        }
+    }
+    
+    #gmap_geocoding {
+        min-height: 650px;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function() {
+
+        var map;
+        var marker
+
+        // var socket = io();
+        var data;
+
+        const port = "3000";
+        const socketIoAddress = `http://juhdinode.herokuapp.com:${port}`;
+        var socket = io(socketIoAddress);
+
+        socket.on('driver', function(response) {
+            console.log('DRIVER POSITION', response);
+            var latlng = new google.maps.LatLng(response.latitude, response.longitude);
+            marker.setIcon({
+                path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                strokeColor: 'red',
+                strokeWeight: 3,
+                scale: 6,
+                rotation: google.maps.geometry.spherical.computeHeading(marker.getPosition(), latlng)
+            })
+            console.log('rotation', google.maps.geometry.spherical.computeHeading(marker.getPosition(), latlng));
+            marker.setPosition(latlng);
+            map.panTo(latlng);
+        });
+
+
+        renderMaps([]);
+
+        function renderMaps(data) {
+            var lat = -3.4407774;
+            var lng = 114.840804;
+
+            map = new google.maps.Map(document.getElementById('gmap_geocoding'), {
+                zoom: 17,
+                center: {
+                    lat: lat,
+                    lng: lng
+                },
+                mapTypeId: 'roadmap',
+                gestureHandling: 'cooperative'
+            });
+
+            var icon = `https://i.stack.imgur.com/oQJuO.png`
+
+
+            marker = new google.maps.Marker({
+                position: {
+                    lat: lat,
+                    lng: lng,
+                },
+                animation: google.maps.Animation.DROP,
+                map: map,
+                icon: icon,
+                draggable: true,
+
+            });
+
+            google.maps.event.addListener(marker, 'drag', function(evt) {
+                var data = {
+                    'latitude': evt.latLng.lat(),
+                    'longitude': evt.latLng.lng(),
+                };
+
+                socket.emit("send_location", data);
+            });
+
+            google.maps.event.addListener(marker, 'dragstart', function(evt) {
+                console.log('Currently dragging marker...');
+            });
+
+        }
+
+        function removeNull(str) {
+            return str == null ? '' : str;
+        }
+
+    });
+</script>
+
+</html>
