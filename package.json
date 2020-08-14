@@ -1,21 +1,21 @@
 {
-  "name": "Node js",
-  "version": "1.0.0",
-  "description": "This version of __ is for temporary deployment.",
-  "main": "index.js",
-  "scripts": {
-    "test": "index.js",
-    "start": "node index.js"
-  },
-  "author": "____",
-  "license": "ISC",
-  "dependencies": {
-    "ejs": "^2.5.7",
-    "express": "^4.16.2",
-    "request": "^2.83.0",
-    "socket.io": "^2.3.0"
-  },
-  "engines": {
-    "node":"^8.9.4"
-  }
+    "name": "nodejs",
+    "version": "1.0.0",
+    "description": "This version of __ is for temporary deployment.",
+    "main": "index.js",
+    "scripts": {
+        "test": "index.js",
+        "start": "node index.js"
+    },
+    "author": "____",
+    "license": "ISC",
+    "dependencies": {
+        "ejs": "^2.5.7",
+        "express": "^4.16.2",
+        "request": "^2.83.0",
+        "socket.io": "^2.3.0"
+    },
+    "engines": {
+        "node": "^8.9.4"
+    }
 }
