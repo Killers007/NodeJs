@@ -36,7 +36,7 @@
         var data;
 
         const port = "3000";
-        const socketIoAddress = `http://juhdinode.herokuapp.com:${port}`;
+        const socketIoAddress = `https://juhdinode.herokuapp.com:${port}`;
         var socket = io(socketIoAddress);
 
         socket.on('driver', function(response) {

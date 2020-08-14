@@ -5,16 +5,6 @@ var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
-// Config
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(function(req, res, next) {
-    req.io = io;
-    next();
-});
-
-// Tell express where to serve static files from
-app.use(express.static(__dirname + '/public'));
-
 // Render homepage.
 app.get('/', function(req, res) {
     res.sendfile('index.html');
@@ -36,5 +26,5 @@ io.on('connection', function(socket) {
 });
 
 // Start
-server.listen(process.env.PORT || 3000);
-console.log('Open http://localhost:3000');
+server.listen(process.env.PORT);
+console.log('Open http://localhost:3000', process.env.PORT);
